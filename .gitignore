@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Environments and local configuration
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+
+# Packaging
+build/
+dist/
+pip-wheel-metadata/
+
+# Runtime data and generated outputs
+/data/
+/outputs/
+/arena_runs/
+/checkpoints/
+/artifacts/generated/
+*.pt
+*.pth
+*.ckpt
+
+# Notebooks and editors
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Operating systems
+.DS_Store
+Thumbs.db
+desktop.ini
