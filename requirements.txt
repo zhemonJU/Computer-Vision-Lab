@@ -1,0 +1,3 @@
+# Compatibility install for the complete research environment.
+# Dependency versions are maintained once, in pyproject.toml.
+-e .[analysis,datasets,dev,research]

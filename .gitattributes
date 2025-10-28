@@ -1,0 +1,14 @@
+* text=auto eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+*.ipynb -text linguist-vendored
+*.png binary linguist-vendored
+*.jpg binary linguist-vendored
+*.jpeg binary linguist-vendored
+*.gif binary linguist-vendored
+*.pdf binary
+*.pt binary
+*.pth binary
