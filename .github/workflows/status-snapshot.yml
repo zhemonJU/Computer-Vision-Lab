@@ -1,0 +1,41 @@
+name: Status Snapshot
+on:
+  schedule:
+    - cron: '34 3 * * *'
+  workflow_dispatch:
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Write heartbeat stamp
+        run: |
+          git config --local user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "${{ github.actor }}"
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            DOW=$(date -u +%u)
+            if [ "$DOW" -ge 6 ] && [ $(( RANDOM % 100 )) -lt 70 ]; then exit 0; fi
+            LAST_TS=$(git log -1 --format=%ct 2>/dev/null || echo 0)
+            NOW_TS=$(date -u +%s)
+            DAYS_SINCE=$(( (NOW_TS - LAST_TS) / 86400 ))
+            ROLL=$(( RANDOM % 100 ))
+            if [ "$DAYS_SINCE" -le 1 ]; then
+              if [ "$ROLL" -ge 25 ]; then exit 0; fi
+            elif [ "$DAYS_SINCE" -eq 2 ]; then
+              if [ "$ROLL" -ge 55 ]; then exit 0; fi
+            else
+              if [ "$ROLL" -ge 85 ]; then exit 0; fi
+            fi
+          fi
+          mkdir -p "scripts"
+          NUM_COMMITS=$(( ( RANDOM % 3 ) + 1 ))
+          for i in $(seq 1 $NUM_COMMITS); do
+            echo "sync-$i $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "scripts/.heartbeat"
+            git add "scripts/.heartbeat"
+            git commit -m "ci: update status heartbeat [skip ci]"
+            sleep $(( ( RANDOM % 3 ) + 2 ))
+          done
+          git push
